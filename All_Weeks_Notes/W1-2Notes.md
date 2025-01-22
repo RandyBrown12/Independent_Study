@@ -10,12 +10,17 @@ Recommend to use container images vs containers to run Kubernetes components.
 
 A Pod is a group of one or more containers that share the same storage and network resources and instructions to run the containers.
 A Pod can contain one or more init containers which are initial containers that are run first before application containers.
-
+  
 #### Notes regarding Init containers
 
 * Init containers always run to completion.
 * They must be completed sequentially.
 * If an Init container fails, kubelet repeatedly restarts that init container until it is completed. This can be overwritten to treat the pod as failed if the Pod has a ``restartPolicy`` of never.
+
+#### Applications for init containers
+* Lets say you have data stored in another server that you do not have any space on your computer for it. An init
+  container can be used to grab the data in the server. 
+* Another example is testing if the pod is ready for the user to connect to.
 
 ### Nodes
 
@@ -113,25 +118,17 @@ spec:
   ports:
     - port: 8081
       targetPort: 8080
-```
-
-Enable Port Forwarding in the terminal for the service to the local machine:
-
-Note: Deleting a pod loses connection to port forwarding.
-
-```bash
-kubectl port-forward service/kubernetes-service 8000:8081
+      nodePort: 8000
 ```
 
 Now you should be able to run a deployment with 3 pods, a Deployment, and a Service.
 
 ### Notes regarding the keys in YAML files:
-
-API Version: The version of the API we want to use for our object.
-Kind: The REST Resource the object represents (Pods, Deployments, etc.)
-Spec: Specification of the desired behavior for the given object.
-Replicas: Number of pods.
-Template: What Describes the pods that are going to be created.
--- Deployment using Selector: The label selector for pods. This must match the pod template's labels.
-Type: What Service to use that will be exposed to the user.
--- Service using Selector: Route service traffic to pods with label keys and values matching.
+* API Version: The version of the API we want to use for our object.
+* Kind: The REST Resource the object represents (Pods, Deployments, etc.)
+* Spec: Specification of the desired behavior for the given object.
+* Replicas: Number of pods.
+* Template: What Describes the pods that are going to be created.
+* -- Deployment using Selector: The label selector for pods. This must match the pod template's labels.
+* Type: What Service to use that will be exposed to the user.
+* -- Service using Selector: Route service traffic to pods with label keys and values matching.
