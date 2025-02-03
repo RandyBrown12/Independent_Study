@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY flaskweb.py .
 
-RUN pip install flask
+RUN pip install flask && apt-get update && apt-get install -y curl
 
 EXPOSE 5000
 
