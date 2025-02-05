@@ -8,18 +8,19 @@ Recommend to use container images vs containers to run Kubernetes components.
 
 ### Pods
 
-A Pod is a group of one or more containers that share the same storage and network resources and instructions to run the containers.
-A Pod can contain one or more init containers which are initial containers that are run first before application containers.
-  
+* A Pod is a group of one or more containers that share the same storage and network resources and instructions to run the containers.
+* A Pod can contain one or more init containers which are initial containers that are run first before application containers.
+
 #### Notes regarding Init containers
 
 * Init containers always run to completion.
 * They must be completed sequentially.
-* If an Init container fails, kubelet repeatedly restarts that init container until it is completed. This can be overwritten to treat the pod as failed if the Pod has a ``restartPolicy`` of never.
+* If an init container fails, kubelet repeatedly restarts that init container until it is completed. This can be overwritten to treat the pod as failed if the Pod has a ``restartPolicy`` of never.
 
 #### Applications for init containers
+
 * Lets say you have data stored in another server that you do not have any space on your computer for it. An init
-  container can be used to grab the data in the server. 
+  container can be used to grab the data in the server.
 * Another example is testing if the pod is ready for the user to connect to.
 
 ### Nodes
@@ -56,7 +57,7 @@ A Pod can contain one or more init containers which are initial containers that 
 ### Control Plane
 
 * Container orchestration layer that uses the kube-apiserver and other interfaces such as etcd, Controller Manager, etc.
-* This Control plane is used to define, deploy, and manage lifecycle of the containers.
+* This control plane is used to define, deploy, and manage lifecycle of the containers.
 
 ### Kubernetes architecture (Kubernetes Cluster)
 
@@ -71,7 +72,7 @@ A Pod can contain one or more init containers which are initial containers that 
 ### Service
 
 * Used to expose a network application running one or more pods in your cluster.
-* When using deployment, deployment will control what is happening with the pods.
+* When using deployment, it will control what is happening with the pods.
 * In YAML files, we could bind the targetPort of the service to the pod by naming the port and using it in the service.
 
 ## Information regarding YAML config files for Kubernetes
@@ -124,6 +125,7 @@ spec:
 Now you should be able to run a deployment with 3 pods, a Deployment, and a Service.
 
 ### Notes regarding the keys in YAML files:
+
 * API Version: The version of the API we want to use for our object.
 * Kind: The REST Resource the object represents (Pods, Deployments, etc.)
 * Spec: Specification of the desired behavior for the given object.
