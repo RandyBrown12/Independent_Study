@@ -6,6 +6,10 @@ Recommend to use container images vs containers to run Kubernetes components.
 
 ## Kubernetes Components
 
+This is Kubernetes in the big picture.
+We will start small and work our way up.
+![Kubernetes Image](https://kubernetes.io/images/docs/kubernetes-cluster-architecture.svg)
+
 ### Pods
 
 * A Pod is a group of one or more containers that share the same storage and network resources and instructions to run the containers.
@@ -38,6 +42,7 @@ Recommend to use container images vs containers to run Kubernetes components.
 ### kubelet
 
 * Node Agent that runs a node.
+* This also communicates with kube-apiserver
 * To use a kublet, it needs a YAML or JSON object to describe the pod.
 
 ### kube-apiserver

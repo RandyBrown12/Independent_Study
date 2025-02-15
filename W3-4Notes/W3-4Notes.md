@@ -79,6 +79,7 @@
   * PersistentVolume (PV) is storage in the cluster provisioned by an administrator or a Storage Class.
   * They are like volumes except the lifecycle does not depend on any pod using the PV.
   * Two ways it can be created:
+
     * Statically:
       * Administrator creates PVs.
     * Dynamically:
@@ -90,13 +91,15 @@
   * Also used for claim checks to the resource.
 * How PV and PVC are used in Kubernetes
 
-  * PVC is created with its accessibility and storage amount.
+  * PVC is created with its accessibility and storage amount that has to have the PV be greater or equal to what its asking.
   * The control loop checks for a new PVC, finds a matching PV, and binds them together.
   * PVC-to-PC are a one-to-one binding.
 * Reclaiming a PVC
 
-  * PVC objects can be deleted to where a PC can claim the resource. There are 3 reclaim policies that a PV can do. (Retrained, Recycled, Deleted). For Recycled, it has become deprecated.
+  * PVC objects can be deleted to where a PV can claim the resource. There are 3 reclaim policies that a PV can do. (Retrained, Recycled, Deleted). For Recycled, it has become deprecated.
   * Retain:
-    * It does manual reclamation of the resource.
+    * The PV and all the data stored in it will still exist.
   * Delete:
-    * Removes the PV and the storage asset.
+    * Remove the data inside the PV.
+* Note regarding PV & PVC:
+  * If another node tries to claim a node with a PV that has readWriteOnce on it, then it will not be mounted, will be in the containerCreating state.

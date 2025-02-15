@@ -2,18 +2,21 @@ For this lab we will demonstrate ClusterIP and NodePort and how these 2 services
 
 We will also use the concepts of PV and PVCs to create volumes for our pods.
 
+Here is a diagram:
+
+![Lab Diagram](W3-4LabPicture.png)
+
 # **PERFORM THESE COMMANDS BEFORE YOU RUN THE YAML FILES:**
 
 Set up docker install
 
 ```
-docker build -t flaskapp .
+docker build . -t <dockerusername>/flaskapp:latest
 ```
 
 Set up a private hub repository:
 
 ```
-docker tag flaskapp:latest <dockerusername>/flaskapp:latest
 docker push <dockerusername>/flaskapp:latest
 ```
 
