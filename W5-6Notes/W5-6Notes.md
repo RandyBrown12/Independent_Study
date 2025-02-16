@@ -35,3 +35,13 @@
 * Restrict secress access to other containers.
 * Use a reputable external Secret store provider.
 * Create logging to where a secret has been accessed.
+
+### Password Vaults for use of Kubernetes
+* We can use the idea of a password vault to lessen the impact of showing sensitive environment variables in a pod.
+* We will focus on two ways to achieve this:
+  * API Calls:
+    * Hashicorp offers API Calls that allow you to access the secret in your runtime environment.
+  * Vault Agent Sidecar:
+    * We can have a sidecar (container running with main application) that grabs secrets from the vault.
+    * After that, it will be written to a volume to where the application can read it.
+* A well-known service is Hashicorp Vault
