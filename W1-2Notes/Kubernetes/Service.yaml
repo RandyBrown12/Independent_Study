@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kubernetes-service
+spec:
+  type: NodePort
+  selector:
+    app: google-pod
+  ports:
+    - port: 8081
+      targetPort: 8080
+      nodePort: 31000

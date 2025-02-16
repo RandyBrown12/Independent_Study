@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubernetes-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: google-pod
+  template:
+    metadata:
+      labels:
+        app: google-pod
+    spec:
+      containers:
+        - image: gcr.io/google-samples/hello-app:2.0
+          name: google-hello-world
+          ports:
+          - containerPort: 8080
