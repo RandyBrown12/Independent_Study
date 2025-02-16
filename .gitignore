@@ -1,3 +1,6 @@
 # Remove Notes.md
 Notes.md
 Study.md
+
+# Remove pycache
+*/__pycache__
