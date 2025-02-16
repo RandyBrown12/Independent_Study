@@ -28,13 +28,13 @@ Create a data directory in W3-4Notes Directory for mounting of PV:
 mkdir data
 ```
 
-Update the hostPath in the PV.YAML to match the file in your folder:
+Update the hostPath in the PV.yaml to match the file in your folder:
 
 ```
 /run/desktop/mnt/host/<WSL-file-path-to-data-directory>
 ```
 
-Run the yaml files:
+Run the YAML	files:
 
 ```
 kubectl apply -f Kubernetes/

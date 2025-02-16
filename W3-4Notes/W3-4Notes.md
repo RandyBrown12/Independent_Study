@@ -68,7 +68,7 @@
   * Pod spec has an optional `hostname` field that will take precedence over the `metadata.name` value.
   * Pod spec also has an optional `subdomain` field to clarify that the pod is in the sub-group of the namespace.
   * DNS Policy for Pods using a `dnsPolicy` field for PodSpec.
-    * "Default" : When the pod is created, grab the name resolution configuration from its node. Despite its name, ClutserFirst is the default DNS policy.
+    * "Default" : When the pod is created, grab the name resolution configuration from its node. Despite its name, ClusterFirst is the default DNS policy.
     * "ClusterFirst" : For a given DNS query, if it matches the configured cluster domain suffix, use the DNS in Kubernetes. Otherwise, use the upstream nameserver.
     * "None" : Ignores DNS settings from the Kubernetes environment.
 

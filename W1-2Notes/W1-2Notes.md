@@ -30,7 +30,7 @@ We will start small and work our way up.
 ### Nodes
 
 * Nodes are a virtual or physical machine that uses a control plane and contains the services needed to run Pods.
-* Components on a node inclue kubelet, container runtime, and kube-proxy.
+* Components on a node include kubelet, container runtime, and kube-proxy.
 * Nodes also contains a status with following information: Addresses, Conditions, Metadata on Node such as CPU, memory, and number of pods.
 * The naming for the nodes has to be unique in relation to other nodes.
 
@@ -47,8 +47,8 @@ We will start small and work our way up.
 
 ### kube-apiserver
 
-* This process is using REST operations to validate & configure data api objects such as pods, services, etc.
-* The API server is used to act as an entrypoint for Kubernetes control plane.
+* This process is using REST operations to validate & configure data API objects such as pods, services, etc.
+* The API server is used to act as an entry point for Kubernetes control plane.
 
 ### etcd
 
@@ -66,7 +66,7 @@ We will start small and work our way up.
 
 ### Kubernetes architecture (Kubernetes Cluster)
 
-* Consists of a control plane that contains a kube-api-server that runs nodes.
+* Consists of a control plane that contains a kube-apiserver that runs nodes.
 * Control plane manages the worker nods and pods in the cluster.
 
 ### Deployment
