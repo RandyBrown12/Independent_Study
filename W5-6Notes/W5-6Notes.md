@@ -2,8 +2,8 @@
 
 ## Notes regarding ConfigMaps and Secrets
 
-* These can be set to immuatable.
-* Both are limited to 1MiB in etcd.
+* These can be set to immutable.
+* Both are limited to 1 MiB in etcd.
 
 ## ConfigMaps
 
@@ -24,24 +24,25 @@
 
 ### Notes regarding Secrets:
 
-* By default, your secrets must be Base-64 encoded which is unecrypted. They also can be accessed by anyone with API or etcd access.
+* By default, your secrets must be Base-64 encoded which is unencrypted. They also can be accessed by anyone with API or etcd access.
 * Kubernetes has built-in secrets for common scenarios such as kubernetes.io/ssh-auth, which is credentials for SSH authentication.
 
 ### How to prevent secrets from unwanted access
 
 * Use Encryption at Rest for Secrets.
-  * This uses a provider like aescbc that is used with ectd to encrypt/decrypt secrets.
+  * This uses a provider like aescbc that is used with etcd to encrypt/decrypt secrets.
 * Add RBAC rules that do least-privilege access.
-* Restrict secress access to other containers.
+* Restrict secret access to other containers.
 * Use a reputable external Secret store provider.
 * Create logging to where a secret has been accessed.
 
 ### Password Vaults for use of Kubernetes
+
 * We can use the idea of a password vault to lessen the impact of showing sensitive environment variables in a pod.
 * We will focus on two ways to achieve this:
   * API Calls:
-    * Hashicorp offers API Calls that allow you to access the secret in your runtime environment.
+    * HashiCorp offers API calls that allow you to access the secret in your runtime environment.
   * Vault Agent Sidecar:
     * We can have a sidecar (container running with main application) that grabs secrets from the vault.
     * After that, it will be written to a volume to where the application can read it.
-* A well-known service is Hashicorp Vault
+* A well-known service is HashiCorp Vault

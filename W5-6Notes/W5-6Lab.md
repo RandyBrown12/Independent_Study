@@ -12,7 +12,7 @@ Make sure you are in the W5-6Notes directory before you continue.
 
 Side Note: Docker Hub has marked your repos as public by default.
 
-To create this setup, we first need to create our images from our Dockerfiles:
+To create this setup, we first need to create our images from our Docker files:
 
 ```
 docker build . -t <docker_username>/flaskapp-frontend-w5-6:latest -f Dockerfile.frontend
