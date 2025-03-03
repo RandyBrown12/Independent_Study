@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pod-v1.0.0
+immutable: true
+data:
+  VERSION: v1.0.0
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pod-v2.0.0
+immutable: true
+data:
+  VERSION: v2.0.0

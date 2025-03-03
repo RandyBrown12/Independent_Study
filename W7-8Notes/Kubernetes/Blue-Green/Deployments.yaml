@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: php-deployment-1
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: php-app-1
+  template:
+    metadata:
+      labels:
+        app: php-app-1
+    spec:
+      containers:
+        - image: randybrown12/php-app:v1.0.0
+          name: php-app-1
+          ports:
+          - containerPort: 80
+          envFrom:
+            - configMapRef: 
+                name: pod-v1.0.0
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: php-deployment-2
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: php-app-2
+  template:
+    metadata:
+      labels:
+        app: php-app-2
+    spec:
+      containers:
+        - image: randybrown12/php-app:v2.0.0
+          name: php-app-2
+          ports:
+          - containerPort: 80
+          envFrom:
+            - configMapRef: 
+                name: pod-v2.0.0

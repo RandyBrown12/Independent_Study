@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: php-service-1
+spec:
+  selector:
+    app: php-app-1
+  ports:
+    - port: 80
+      targetPort: 80
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: php-service-2
+spec:
+  selector:
+    app: php-app-2
+  ports:
+    - port: 80
+      targetPort: 80
+  type: ClusterIP
