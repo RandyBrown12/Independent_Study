@@ -1,0 +1,47 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: pod-developer-reader
+  namespace: developer
+rules:
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: pod-developer-reader-binding
+  namespace: developer
+subjects:
+- kind: ServiceAccount
+  name: dev-account
+  namespace: developer
+roleRef:
+  kind: Role
+  name: pod-developer-reader
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: pod-admin-reader
+  namespace: admin
+rules:
+- apiGroups: [""]
+  resources: ["pods","services"]
+  verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: pod-admin-reader-binding
+  namespace: admin
+subjects:
+- kind: ServiceAccount
+  name: admin-account
+  namespace: admin
+roleRef:
+  kind: ClusterRole
+  name: pod-admin-reader
+  apiGroup: rbac.authorization.k8s.io

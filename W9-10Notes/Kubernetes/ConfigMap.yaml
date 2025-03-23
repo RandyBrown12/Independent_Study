@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-info
+  namespace: developer
+immutable: true
+data:
+  POSTGRES_USER: randy-brown-pod
+  POSTGRES_DB: randy-brown-pod-db
+  POSTGRES_HOST: flaskapp-backend-service
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-info
+  namespace: admin
+immutable: true
+data:
+  POSTGRES_USER: randy-brown-pod
+  POSTGRES_DB: randy-brown-pod-db
+  POSTGRES_HOST: flaskapp-backend-service.developer.svc.cluster.local

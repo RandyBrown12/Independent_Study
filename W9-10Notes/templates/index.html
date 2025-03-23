@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Application</title>
+</head>
+<body>
+    <h1> Perform create, update and delete operations </h1>
+    
+    <h2> Create an item: </h2>
+
+    <form action="/createItem" method="POST">
+        <label for="item"> Item: </label>
+        <input name="item" id="item" type="text">
+
+        <br>
+
+        <label for="item"> Count: </label>
+        <input name="count" id="count" type="number">
+
+        <br>
+
+        <button> Create the item </button>
+    </form>
+
+    <h2> Update an item count based on item: </h2>
+
+    <form action="/updateItem" method="POST">
+        <label for="item"> Item: </label>
+        <input name="item" id="item" type="text">
+
+        <br>
+
+        <label for="item"> Count: </label>
+        <input name="count" id="count" type="number">
+
+        <br>
+
+        <button> Update the item </button>
+    </form>
+
+    <h2> Delete an item: </h2>
+
+    <form action="/deleteItem" method="POST">
+        <label for="item"> Item: </label>
+        <input name="item" id="item" type="text">
+
+        <br>
+
+        <button> Delete the item </button>
+    </form>
+
+    {% if db_info %}
+        <h1> You are in admin mode! </h1>
+        {% for row in db_info %}
+            <p> {{ row[0] }} | {{ row[1] }} | {{ row[2] }}</p>
+        {% endfor %}
+    {% endif %}
+</body>
+</html>

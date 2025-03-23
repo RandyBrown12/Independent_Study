@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: flaskapp-frontend-service
+  namespace: developer
+spec:
+  selector:
+    app: flaskapp-frontend
+  ports:
+    - port: 80
+      targetPort: 5000
+      nodePort: 30000
+  clusterIP: 10.96.0.4
+  type: NodePort
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flaskapp-backend-service
+  namespace: developer
+spec:
+  selector:
+    app: flaskapp-backend
+  ports:
+    - port: 5432
+      targetPort: 5432
+  clusterIP: 10.96.0.3
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flaskapp-frontend-admin-service
+  namespace: admin
+spec:
+  selector:
+    app: flaskapp-frontend-admin
+  ports:
+    - port: 80
+      targetPort: 5000
+  clusterIP: 10.96.0.6
+  type: ClusterIP

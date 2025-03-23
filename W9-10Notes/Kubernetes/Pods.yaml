@@ -1,0 +1,70 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: flaskapp-frontend
+  namespace: developer
+  labels: 
+    app: flaskapp-frontend
+spec:
+  containers:
+  - name: flaskapp-frontend
+    image: docker.io/randybrown12/flaskapp-frontend-w9-10:latest
+    envFrom:
+    - configMapRef:
+        name: postgres-info
+    - secretRef:
+        name: backend-password
+    ports:
+    - containerPort: 5000
+    securityContext:
+      runAsNonRoot: true
+      runAsUser: 1000
+      readOnlyRootFilesystem: true
+    env:
+      - name: POD_NAME
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.name
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: flaskapp-frontend-admin
+  namespace: admin
+  labels: 
+    app: flaskapp-frontend-admin
+spec:
+  containers:
+  - name: flaskapp-frontend-admin
+    image: docker.io/randybrown12/flaskapp-frontend-w9-10:latest
+    envFrom:
+    - configMapRef:
+        name: postgres-info
+    - secretRef:
+        name: backend-password
+    ports:
+    - containerPort: 5000
+    env:
+      - name: POD_NAME
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.name
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: flaskapp-backend
+  namespace: developer
+  labels: 
+    app: flaskapp-backend
+spec:
+  containers:
+  - name: flaskapp-backend
+    image: docker.io/randybrown12/flaskapp-backend-w9-10:latest
+    envFrom:
+    - configMapRef:
+        name: postgres-info
+    - secretRef:
+        name: backend-password
+    ports:
+    - containerPort: 5432

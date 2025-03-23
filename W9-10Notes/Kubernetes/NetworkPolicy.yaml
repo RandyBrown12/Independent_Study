@@ -1,0 +1,143 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: deny-all-developer
+  namespace: developer
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+    - Egress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: deny-all-admin
+  namespace: admin
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+    - Egress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-dns-developer
+  namespace: developer
+spec:
+  podSelector: {}
+  egress:
+  - to:
+    - ipBlock:
+        cidr: 0.0.0.0/0
+    ports:
+    - protocol: UDP
+      port: 53            
+  policyTypes:
+  - Egress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-dns-admin
+  namespace: admin
+spec:
+  podSelector: {}
+  egress:
+  - to:
+    - ipBlock:
+        cidr: 0.0.0.0/0
+    ports:
+    - protocol: UDP
+      port: 53            
+  policyTypes:
+  - Egress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: frontend-network
+  namespace: developer
+spec:
+  podSelector:
+    matchLabels:
+      app: flaskapp-frontend
+  ingress:
+  - from:
+    - ipBlock:
+        cidr: 0.0.0.0/32
+    ports:
+    - protocol: TCP
+      port: 5000
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app: flaskapp-backend
+    ports:
+    - protocol: TCP
+      port: 5432
+  policyTypes:
+  - Ingress
+  - Egress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: frontend-admin-network
+  namespace: admin
+spec:
+  podSelector:
+    matchLabels:
+      app: flaskapp-frontend-admin
+  ingress:
+  - from:
+    - ipBlock:
+        cidr: 127.0.0.1/32
+    ports:
+    - protocol: TCP
+      port: 5000
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          name: developer
+      podSelector:
+        matchLabels:
+          app: flaskapp-backend
+    ports:
+    - protocol: TCP
+      port: 5432
+  policyTypes:
+  - Ingress
+  - Egress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: backend-to-frontend-and-admin
+  namespace: developer
+spec:
+  podSelector:
+    matchLabels:
+      app: flaskapp-backend
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: admin
+      podSelector:
+        matchLabels:
+          app: flaskapp-frontend-admin
+    - namespaceSelector:
+        matchLabels:
+          name: developer
+      podSelector:
+        matchLabels:
+          app: flaskapp-frontend
+    ports:
+    - protocol: TCP
+      port: 5432
+  policyTypes:
+  - Ingress

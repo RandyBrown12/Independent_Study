@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: php-deployment
+  namespace: Production
 spec:
   replicas: 3
   selector:
@@ -22,3 +23,5 @@ spec:
           envFrom:
             - configMapRef: 
                 name: pod-v1.0.0
+      imagePullSecrets:
+      - name: github-actions-secret
