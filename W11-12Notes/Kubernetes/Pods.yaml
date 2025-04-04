@@ -1,0 +1,52 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: flaskapp-frontend
+  labels: 
+    app: flaskapp-frontend
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/path: "/metrics"
+    prometheus.io/port: "5000"
+spec:
+  containers:
+  - name: flaskapp-frontend
+    image: docker.io/randybrown12/flaskapp-frontend-w11-12:latest
+    envFrom:
+    - configMapRef:
+        name: postgres-info
+    - secretRef:
+        name: backend-password
+    ports:
+    - containerPort: 5000
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: flaskapp-backend
+  labels: 
+    app: flaskapp-backend
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/path: "/metrics"
+    prometheus.io/port: "9187"
+spec:
+  containers:
+  - name: flaskapp-backend
+    image: docker.io/randybrown12/flaskapp-backend-w11-12:latest
+    envFrom:
+    - configMapRef:
+        name: postgres-info
+    - secretRef:
+        name: backend-password
+    ports:
+    - containerPort: 5432
+  - name: postgres-exporter
+    image: prometheuscommunity/postgres-exporter
+    envFrom:
+    - configMapRef:
+        name: postgres-exporter-info
+    ports:
+    - containerPort: 9187
+
+    

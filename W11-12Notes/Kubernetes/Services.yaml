@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: node-port-service-to-flaskapp-frontend
+  labels:
+    service: flaskapp-frontend-service
+spec:
+  selector:
+    app: flaskapp-frontend
+  ports:
+    - name: http
+      port: 80
+      targetPort: 5000
+      nodePort: 30000
+  type: NodePort
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cluster-ip-service-to-flaskapp-backend
+  labels:
+    service: flaskapp-backend-service
+spec:
+  selector:
+    app: flaskapp-backend
+  ports:
+    - name: postgres
+      port: 5432
+      targetPort: 5432
+  clusterIP: 10.96.0.26
+  type: ClusterIP

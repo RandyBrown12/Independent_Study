@@ -1,0 +1,7 @@
+FROM postgres:latest
+
+COPY table.sql /docker-entrypoint-initdb.d/
+
+EXPOSE 5432
+
+# There is no CMD/RUN as postgres automatically sets its up for you.

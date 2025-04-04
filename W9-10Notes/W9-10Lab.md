@@ -24,7 +24,7 @@ docker push <docker-username>/flaskapp-backend-w9-10:latest
 ### 2.) Start up minikube with Calico
 
 ```
-minikube start --cni=calico
+minikube start --cni=calico --driver=docker
 ```
 
 ### 3.) Apply yaml files

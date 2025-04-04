@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-info
+immutable: true
+data:
+  POSTGRES_USER: randy-brown-pod
+  POSTGRES_DB: randy-brown-pod-db
+  POSTGRES_HOST: cluster-ip-service-to-flaskapp-backend
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-exporter-info
+immutable: true
+data:
+  DATA_SOURCE_NAME: "postgresql://randy-brown-pod@localhost:5432/randy-brown-pod-db?sslmode=disable"
