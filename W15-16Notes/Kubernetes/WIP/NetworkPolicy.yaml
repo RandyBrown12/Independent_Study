@@ -1,0 +1,251 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: deny-all-developer
+  namespace: developer
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+    - Egress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: deny-all-admin
+  namespace: admin
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+    - Egress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-dns-developer
+  namespace: developer
+spec:
+  podSelector: {}
+  egress:
+  - to:
+    - ipBlock:
+        cidr: 0.0.0.0/0
+    ports:
+    - protocol: UDP
+      port: 53            
+  policyTypes:
+  - Egress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-dns-admin
+  namespace: admin
+spec:
+  podSelector: {}
+  egress:
+  - to:
+    - ipBlock:
+        cidr: 0.0.0.0/0
+    ports:
+    - protocol: UDP
+      port: 53            
+  policyTypes:
+  - Egress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: frontend-network
+  namespace: developer
+spec:
+  podSelector:
+    matchLabels:
+      app: flaskapp-frontend
+  ingress:
+  - from:
+    - ipBlock:
+        cidr: 0.0.0.0/0
+    ports:
+    - protocol: TCP
+      port: 5000
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app: flaskapp-backend
+    ports:
+    - protocol: TCP
+      port: 5432
+  - to:
+    - podSelector:
+        matchLabels:
+          app: vault
+    ports:
+    - protocol: TCP
+      port: 8200
+  policyTypes:
+  - Ingress
+  - Egress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: frontend-admin-network
+  namespace: admin
+spec:
+  podSelector:
+    matchLabels:
+      app: flaskapp-frontend-admin
+  ingress:
+  - from:
+    - ipBlock:
+        cidr: 127.0.0.1/32
+    ports:
+    - protocol: TCP
+      port: 5000
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          name: developer
+      podSelector:
+        matchLabels:
+          app: flaskapp-backend
+    ports:
+    - protocol: TCP
+      port: 5432
+  - to:
+    - podSelector:
+        matchLabels:
+          app: vault
+    ports:
+    - protocol: TCP
+      port: 8200
+  policyTypes:
+  - Ingress
+  - Egress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: backend-to-frontend-and-admin
+  namespace: developer
+spec:
+  podSelector:
+    matchLabels:
+      app: flaskapp-backend
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: admin
+      podSelector:
+        matchLabels:
+          app: flaskapp-frontend-admin
+    - namespaceSelector:
+        matchLabels:
+          name: developer
+      podSelector:
+        matchLabels:
+          app: flaskapp-frontend
+    ports:
+    - protocol: TCP
+      port: 5432
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app: vault
+    ports:
+    - protocol: TCP
+      port: 8200
+  policyTypes:
+  - Ingress
+---
+# Vault Server Network Policy
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: vault-server-policy
+spec:
+  podSelector:
+    matchLabels:
+      app: vault
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    # Allow pods with the Vault agent injector to connect to Vault
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/name: vault-agent-injector
+    ports:
+    - protocol: TCP
+      port: 8200
+  - from:
+    # Allow frontend and backend pods to communicate with Vault
+    - namespaceSelector:
+        matchLabels:
+          name: developer
+    ports:
+    - protocol: TCP
+      port: 8200
+  - from:
+    # Allow frontend-admin to communicate with Vault
+    - namespaceSelector:
+        matchLabels:
+          name: admin
+    ports:
+    - protocol: TCP
+      port: 8200
+  egress:
+  - to:
+    - namespaceSelector: {}  # Allow egress for Vault to function properly
+    ports:
+    - protocol: TCP
+--- 
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: vault-injector-policy
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: vault-agent-injector
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    # Allow the Kubernetes API server to reach the webhook
+    - podSelector:
+        matchLabels:
+          component: kube-apiserver
+    ports:
+    - protocol: TCP
+      port: 8080  # Webhook port
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app: vault
+    ports:
+    - protocol: TCP
+      port: 8200
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          name: developer
+    ports:
+    - protocol: TCP
+      port: 443
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          name: admin
+    ports:
+    - protocol: TCP
+      port: 443

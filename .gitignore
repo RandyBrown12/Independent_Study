@@ -4,3 +4,6 @@ Study.md
 
 # Remove pycache
 */__pycache__
+
+# Remove W13-14 Generator Go_Files
+W13-14Notes/timer-operator/*.go

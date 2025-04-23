@@ -1,0 +1,7 @@
+apiVersion: timer.uco.edu/v1
+kind: Timer
+metadata:
+  name: cr-timer
+spec:
+  duration: "1m"
+  message: "Test"
